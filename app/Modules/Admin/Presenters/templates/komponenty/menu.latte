@@ -1,0 +1,44 @@
+
+
+
+<div class="sb-sidenav-menu-heading">Soutěž</div>
+
+<a class="nav-link" n:href="Competitor:Default">
+	<div class="sb-nav-link-icon"><i class="fas fa-edit"></i></div>
+	Závodníci
+</a>
+<a class="nav-link" n:href="Mateches:Default">
+	<div class="sb-nav-link-icon"><i class="fas fa-edit"></i></div>
+	Utkání
+</a>
+
+
+{foreach array(1=>'Mladší',2=>'Starší',3=>'Dorost') as $x => $y}
+<div class="sb-sidenav-menu-heading">{$y}</div>
+
+<a class="nav-link" n:href="Table:Default $x">
+	<div class="sb-nav-link-icon"><i class="fas fa-edit"></i></div>
+	Stůl {$y}
+</a>
+<a class="nav-link" n:href="Competitor:Results $x">
+	<div class="sb-nav-link-icon"><i class="fas fa-edit"></i></div>
+	Výsledky {$y}
+</a>
+<a class="nav-link" n:href="Competitor:Test $x">
+	<div class="sb-nav-link-icon"><i class="fas fa-edit"></i></div>
+	Diplomy {$y}
+</a>
+{/foreach}
+
+<div class="sb-sidenav-menu-heading">Jádro</div>
+
+<a class="nav-link" n:href="SystemVariable:Default">
+	<div class="sb-nav-link-icon"><i class="fas fa-edit"></i></div>
+	Nastavené webu
+</a>
+
+
+
+
+
+

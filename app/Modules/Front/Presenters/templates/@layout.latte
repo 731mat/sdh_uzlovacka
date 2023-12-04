@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>{include title} - {ifset title}{include title|stripHtml} | {/ifset}{control systemVariable Nazev_firmy}</title>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<meta content="" name="keywords" />
+	<meta content="" name="{block description}{/block}" />
+
+	<!-- Favicon -->
+	<link href="{$basePath}/img/favicon.ico" rel="icon" />
+
+	<!-- Google Web Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Poppins:wght@600;700&display=swap"
+			rel="stylesheet"
+	/>
+
+	<!-- Icon Font Stylesheet -->
+	<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+			rel="stylesheet"
+	/>
+	<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+			rel="stylesheet"
+	/>
+
+	<!-- Libraries Stylesheet -->
+	<link href="{$basePath}/lib/animate/animate.min.css" rel="stylesheet" />
+	<link href="{$basePath}/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+
+	<!-- Customized Bootstrap Stylesheet -->
+	<link href="{$basePath}/css/bootstrap.min.css" rel="stylesheet" />
+
+	<!-- Template Stylesheet -->
+	<link href="{$basePath}/css/style.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+
+
+
+<!-- Spinner Start -->
+<div
+		id="spinner"
+		class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
+>
+	<div class="spinner-grow text-primary" role="status"></div>
+</div>
+<!-- Spinner End -->
+
+
+<!-- Topbar Start -->
+<div class="container-fluid bg-light p-0">
+		<div n:if="$isLogin" class="row gx-0 d-none d-lg-flex">
+			<div class="col-lg-12 px-5 text-end" style="background: #FF9800; color: white;">
+				<div class="h-100 d-inline-flex align-items-center">
+					<a class="btn btn-square " n:href=":Admin:Dashboard:default">Administrace</a>
+				</div>
+			</div>
+		</div>
+	<!--<div class="row gx-0 d-none d-lg-flex">
+		<div class="col-lg-7 px-5 text-start">
+			<div
+					class="h-100 d-inline-flex align-items-center border-start border-end px-3"
+			>
+				<small class="fa fa-phone-alt me-2"></small>
+				<small>{control systemVariable hlavni_telefon}</small>
+			</div>
+			<div class="h-100 d-inline-flex align-items-center border-end px-3">
+				<small class="far fa-envelope-open me-2"></small>
+				<small>{control systemVariable hlavni_email}</small>
+			</div>
+			<div class="h-100 d-inline-flex align-items-center border-end px-3">
+				<small class="far fa-clock me-2"></small>
+				<small>{control systemVariable oteviraci_doba}</small>
+			</div>
+		</div>
+		<div class="col-lg-5 px-5 text-end">
+			<div class="h-100 d-inline-flex align-items-center">
+				<a class="btn btn-square border-end border-start" target="_blank" href="{control systemVariable url_mapy_cz}"><i class="fas fa-map-pin"></i></a>
+				<a class="btn btn-square border-end" target="_blank" href="{control systemVariable url_google_mapy}"><i class="fas fa-map-marker-alt"></i></a>
+				<a class="btn btn-square border-end" target="_blank" href="{control systemVariable url_youtube}"><i class="fab fa-youtube"></i></a>
+			</div>
+		</div>
+	</div>-->
+</div>
+<!-- Topbar End -->
+
+<!-- Navbar Start -->
+<nav
+		class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0">
+	<a href="/" class="navbar-brand d-flex align-items-center">
+		<h1 class="m-0">
+			<i class="{control systemVariable FontAwesome_logo} text-primary me-3"></i>{control systemVariable Nazev_firmy}
+		</h1>
+	</a>
+	<button
+			type="button"
+			class="navbar-toggler"
+			data-bs-toggle="collapse"
+			data-bs-target="#navbarCollapse"
+	>
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarCollapse">
+		<div class="navbar-nav ms-auto py-3 py-lg-0">
+			<a n:href="Homepage:default" class="nav-item nav-link">Domů</a>
+			<a n:href="Registrace:default" class="nav-item nav-link">Registrovat</a>
+			<a n:href="Registrace:zaregistrovani" class="nav-item nav-link">Seznam zaregistrovaných</a>
+			<a n:href="Contact:default" class="nav-item nav-link">Kontakt</a>
+		</div>
+	</div>
+</nav>
+<!-- Navbar End -->
+
+
+<div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn;">
+	<div class="container text-center py-5">
+		<h1 class="display-4 text-white  slideInDown mb-4">{include title}</h1>
+		<nav aria-label="breadcrumb animated slideInDown"></nav></div>
+</div>
+
+
+{include content}
+
+<!-- Footer Start -->
+<div class="container-fluid bg-dark footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
+	<div class="container py-5">
+		<div class="row g-5">
+			<div class="col-lg-3 col-md-6">
+				<h1 class="text-white mb-4">
+					<i class="{control systemVariable FontAwesome_logo} text-primary me-3"></i>{control systemVariable nazev_firmy_kratky}
+				</h1>
+				<p>
+					Změřime vše
+				</p>
+				<div class="d-flex pt-2">
+					<a class="btn btn-square btn-outline-primary me-1" target="_blank" href="{control systemVariable url_mapy_cz}"><i class="fas fa-map-pin"></i></a>
+					<a class="btn btn-square btn-outline-primary me-1" target="_blank" href="{control systemVariable url_google_mapy}"><i class="fas fa-map-marker-alt"></i></a>
+					<a class="btn btn-square btn-outline-primary me-1" target="_blank" href="{control systemVariable url_youtube}"><i class="fab fa-youtube"></i></a>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-6">
+				<h4 class="text-light mb-4">Adresa</h4>
+				<p><i class="fa fa-map-marker-alt me-3"></i>{control systemVariable adresa_firmy}</p>
+				<p><i class="fa fa-phone-alt me-3"></i>{control systemVariable hlavni_telefon}</p>
+				<p><i class="fa fa-envelope me-3"></i>{control systemVariable hlavni_email}</p>
+			</div>
+			<div class="col-lg-3 col-md-6">
+
+			</div>
+			<div class="col-lg-3 col-md-6">
+
+			</div>
+
+		</div>
+	</div>
+	<div class="container-fluid copyright">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+					&copy; <a href="#">{control systemVariable Nazev_firmy}</a>, All Right Reserved. <a n:href=":Admin:Sign:in">Přihlášení do administrace</a>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Footer End -->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"
+><i class="bi bi-arrow-up"></i
+	></a>
+
+<!-- JavaScript Libraries -->
+<script src="{$basePath}/admin-data/js/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{$basePath}/lib/wow/wow.min.js"></script>
+<script src="{$basePath}/lib/easing/easing.min.js"></script>
+<script src="{$basePath}/lib/waypoints/waypoints.min.js"></script>
+<script src="{$basePath}/lib/owlcarousel/owl.carousel.min.js"></script>
+
+<script src="{$basePath}/js/main.js"></script>
+	<script src="{$basePath}/js/netteForms.js"></script>
+	<script src="{$basePath}/js/nette.ajax.js"></script> {* Nette Ajax depens on jQuery *}
+
+<script>
+	$(function(){
+		var current = location.pathname=="/"?'/':location.pathname;
+
+		$('#navbarCollapse a').each(function(){
+			var $this = $(this);
+			if($this.attr('href').indexOf(current) !== -1){
+				$this.addClass('active');
+			}else
+				$this.removeClass('active');
+		})
+	})
+</script>
+
+    {block scripts}{/block}
+
+
+</body>
+</html>

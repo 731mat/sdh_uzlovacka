@@ -1,0 +1,83 @@
+{block title}Utkání{/block}
+{block rightsite}{/block}
+{block tlacitkaZ}
+{/block}
+
+{block content}
+
+
+    <a n:foreach="array(1=>'Mladši',2=>'Starší',3=>'Dorost') as $x => $y" n:href=":generateRound $x" class="btn btn-primary">Vygenerovat dalsi kolo {$y}</a>
+
+    <br>
+    <br>
+    <br>
+
+    <h1>chybí</h1>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <th>Levá</th>
+            <th>Pravá</th>
+        </thead>
+        <tbody>
+        {foreach $matches as $match}
+            {if $match->first_competitor_time == null}
+                <tr>
+                    <td><strong>{$match->ref('competitor', 'first_competitor')->start_number}</strong>  {$match->ref('competitor', 'first_competitor')->first_name} {$match->ref('competitor', 'first_competitor')->last_name} <sub>{$match->first_competitor_time} (<strong>{$match->first_competitor_mistakes}</strong>)</sub></td>
+                    <td><strong>{$match->ref('competitor', 'second_competitor')->start_number}</strong>  {$match->ref('competitor', 'second_competitor')->first_name} {$match->ref('competitor', 'second_competitor')->last_name} <sub>{$match->first_competitor_time} (<strong>{$match->first_competitor_mistakes}</strong>)</sub></td>
+                </tr>
+            {/if}
+        {/foreach}
+        </tbody>
+    </table>
+
+{/block}
+
+{block scripts}
+    {include parent}
+
+    <script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>
+    <script src="{$basePath}/admin-data/tinymce/js/tinymce/tinymce.js"></script>
+
+
+   <script>
+       $(function () {
+           $.nette.init();
+       });
+   </script>
+
+   <script>
+   	$.nette.ext("modals", {
+   		success: function(payload) {
+               console.log(payload);
+   			if (payload.redirect) {
+   				$(".modal-ajax").modal("hide");
+   			} else if(payload.isModal) {
+   				$('.modal-ajax').modal('show');
+   			}else{
+   			    $(".modal-ajax").modal("hide");
+   			}
+   		}
+   	});
+
+   	$.nette.ext("ajaxRedirect", {
+   		success: function (payload) {
+   			if (payload.redirect) {
+   				$.nette.ajax(payload.redirect);
+   			}
+   		}
+   	});
+   </script>
+
+    <script>
+        function copyToClipboard(element) {
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val(element).select();
+            document.execCommand("copy");
+            $temp.remove();
+        }
+    </script>
+{/block}
+
+
+

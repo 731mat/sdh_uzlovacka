@@ -1,0 +1,174 @@
+{block title}Stůl{/block}
+{block rightsite}{/block}
+{block tlacitkaZ}
+{/block}
+{block tlacitkaP}
+{/block}
+
+{block content}
+    {snippet tabulkaContainer}
+
+    <div n:if="isset($first_match)" class="row justify-content-md-center top_form">
+        <div class="col-sm-6 first_competitor" >
+            <h1>{$first_match->ref('competitor', 'first_competitor')->start_number} {$first_match->ref('competitor', 'first_competitor')->first_name} {$first_match->ref('competitor', 'first_competitor')->last_name}</h1>
+            <p>{$first_match->ref('competitor', 'first_competitor')->sdh} ({$first_match->ref('competitor', 'first_competitor')->score})</p>
+        </div>
+        <div class="col-sm-6 second_competitor" >
+            <h1>{$first_match->ref('competitor', 'second_competitor')->start_number} {$first_match->ref('competitor', 'second_competitor')->first_name} {$first_match->ref('competitor', 'second_competitor')->last_name}</h1>
+            <p>{$first_match->ref('competitor', 'second_competitor')->sdh} ({$first_match->ref('competitor', 'second_competitor')->score})</p>
+        </div>
+
+        <div class="col-sm-8 mt-4">
+            <div class="row justify-content-md-center">
+                <form method="post" action="/admin/table/save-result/{$id}" style="display: flex;">
+                    <div class="col-sm-6 " n:syntax="off">
+                        <label for="time">Čas (MM:SS.ss):</label>
+                        <input type="text" name="first_competitor_time" pattern="\d{1,2}:\d{2}.\d{2}" required/>
+                        <input type="number" name="first_competitor_mistakes" min="0" max="5">
+                    </div>
+                    <div class="col-sm-6" n:syntax="off">
+                        <label for="time">Čas (MM:SS.ss):</label>
+                        <input  type="text" name="second_competitor_time" pattern="\d{1,2}:\d{2}.\d{2}" required/>
+                        <input type="number" name="second_competitor_mistakes" min="0" max="5">
+                    </div>
+                    <input type="hidden" name="match_id" value="{$first_match->id}">
+                    <input type="submit" class="btn btn-primary" value="Uložit">
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+
+
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <th>Levá</th>
+                <th>Pravá</th>
+            </thead>
+            <tbody>
+            {foreach $matches as $match}
+                <tr {if $match->first_competitor_time != null}style="background: gray"{else}ondblclick="window.location.replace('https://hasici.neplachovice.cz/admin/table/default/{$match->table_id}?selected={$match->id}');"{/if}>
+                    <td {if (($match->second_competitor_mistakes*10000)+$match->second_competitor_time) > (($match->first_competitor_mistakes*10000)+$match->first_competitor_time)}style="background-color: #87ff87;"{/if}><strong>{$match->ref('competitor', 'first_competitor')->start_number}</strong>  {$match->ref('competitor', 'first_competitor')->first_name} {$match->ref('competitor', 'first_competitor')->last_name} <sub>{$match->first_competitor_time|cas} (<strong>{$match->first_competitor_mistakes}</strong>)</sub></td>
+                    <td {if (($match->second_competitor_mistakes*10000)+$match->second_competitor_time) < (($match->first_competitor_mistakes*10000)+$match->first_competitor_time)}style="background-color: #87ff87;"{/if}><strong>{$match->ref('competitor', 'second_competitor')->start_number}</strong>  {$match->ref('competitor', 'second_competitor')->first_name} {$match->ref('competitor', 'second_competitor')->last_name} <sub>{$match->second_competitor_time|cas} (<strong>{$match->second_competitor_mistakes}</strong>)</sub></td>
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    {/snippet}
+
+    {snippet modal}
+        {if $presenter->isAjax()}
+                <div class="modal  fade modal-ajax">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button"  class="btn close" data-dismiss="modal">&times;</button>
+                                {block modalHeader}
+                                    <h3 class="modal-title">
+                                    Závodník
+                                    </h3>
+                                {/block}
+                            </div>
+                            <div class="modal-body">
+                                {control raceUserForm}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        {/if}
+    {/snippet}
+
+{/block}
+
+
+{block style}
+<style>
+    .top_form{
+        background-color: #ffe500;
+
+    }
+    .first_competitor{
+        border-right: 3px solid red;
+        background-color: #ffe500;
+        padding-top: 20px;
+        padding-bottom: 20px;
+
+    }
+    .second_competitor{
+        text-align:right;
+        border-left: 3px solid red;
+        background-color: #ffe500;
+        padding-top: 20px;
+        padding-bottom: 20px;
+
+    }
+
+    .first_competitor h1,.second_competitor h1{
+        font-size: 60px;
+        font-weight: bolder;
+    }
+    .first_competitor p,.second_competitor p{
+        font-size: 20px;
+    }
+
+</style>
+{/block}
+
+
+{block scripts}
+    {include parent}
+
+    <script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>
+    <script src="{$basePath}/admin-data/tinymce/js/tinymce/tinymce.js"></script>
+
+
+   <script>
+       $(function () {
+           $.nette.init();
+       });
+   </script>
+
+   <script n:syntax="double">
+   	$.nette.ext("modals", {
+   		success: function(payload) {
+               console.log(payload);
+   			if (payload.redirect) {
+                   console.log("asdad");
+
+
+   				$(".modal-ajax").modal("hide");
+   			} else if(payload.isModal) {
+   				$('.modal-ajax').modal('show');
+   			}else{
+   			    //$(".modal-ajax").modal("hide");
+                   //setTimeout(() => {$(".modal-ajax").modal('hide')}, 1150)
+                   $('.fade').hide();
+   			}
+   		}
+   	});
+
+   	$.nette.ext("ajaxRedirect", {
+   		success: function (payload) {
+   			if (payload.redirect) {
+   				$.nette.ajax(payload.redirect);
+   			}
+   		}
+   	});
+   </script>
+
+    <script>
+        function copyToClipboard(element) {
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val(element).select();
+            document.execCommand("copy");
+            $temp.remove();
+        }
+    </script>
+{/block}
+
+
+

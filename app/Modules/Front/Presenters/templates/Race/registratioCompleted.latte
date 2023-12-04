@@ -1,0 +1,94 @@
+{block title}{$race['name']} - registrace souhrn{/block}
+
+{block content}
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+                {snippet tabulkaContainer}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3><i class="fas fa-check-circle text-success"></i> Uspěšně zaregistrováno</h3>
+                            <p>Super, registrace na závod proběhla v pořádku. Níže si můžete zkontrolovat zda je vše v pořádku popřípadě upravit nesrovnalosti.</p>
+                            <p>Kopii jsem odeslali na váš email.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                              <div class="card-body">
+                                  <div class="row">
+                                      <h3>Platba za registraci</h3>
+                                      <div class="col-md-4">
+                                          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Zaplat">
+                                      </div>
+                                      <div class="col-md-8">
+                                          Číslo účtu:
+                                          000000002020320
+                                          <br>
+                                          VS:
+                                          000000002020320
+                                          <br>
+                                          Cena:
+                                          870Kč
+                                        </div>
+                                      </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 mt-5">
+                            <h4>Seznam zaregistrovaných</h4>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>Jméno</th>
+                                    <th>Příjmení</th>
+                                    <th>Datum narození</th>
+                                    <th>Tým</th>
+                                    <th>Email</th>
+                                    <th>Telefon</th>
+                                    <th>Kategorie</th>
+                                    <th>Zaplaceno</th>
+                                    <th>Date</th>
+                                </thead>
+                                <tbody>
+                                    <tr n:foreach="$userRegister as $user_reg">
+                                        <td>{$user_reg['first_name']}</td>
+                                        <td>{$user_reg['last_name']}</td>
+                                        <td>{$user_reg['date_birth']|date:'d.m.Y'}</td>
+                                        <td>{$user_reg['team']}</td>
+                                        <td>{$user_reg['email']}</td>
+                                        <td>{$user_reg['phone']}</td>
+                                        <td>{$user_reg->ref('race__category','id_race_category')->name}</td>
+                                        <td>{$user_reg['pay']}</td>
+                                        <td><a class="btn">Upavit</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-sm-12 d-flex wow fadeIn" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn;">
+                            <a class="btn btn-lg btn-primary" href="/race/detail/1">Nová registrace</a>
+                        </div>
+
+                    </div>
+                {/snippet}
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block scripts}
+{include parent}
+
+    <script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>
+    <script src="{$basePath}/admin-data/tinymce/js/tinymce/tinymce.js"></script>
+
+    <script>
+        $(function () {
+            $.nette.init();
+        });
+    </script>
+{/block}

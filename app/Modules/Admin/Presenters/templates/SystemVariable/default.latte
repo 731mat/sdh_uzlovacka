@@ -1,0 +1,100 @@
+{block title}Proměnné{/block}
+{block rightsite}{/block}
+{block tlacitkaZ}
+<a class="btn btn-light btn-sm ajax" n:href="add!"><i class="fas fa-plus"></i> Přidat</a>
+{/block}
+
+{block content}
+    {snippet tabulkaContainer}
+        <table class="table table-bordered">
+            <thead>
+                <th>Alias</th>
+                <th>Název</th>
+                <th>Hodnota</th>
+            </thead>
+            <tbody>
+            {foreach $list as $field}
+                <tr>
+                    <td><span onclick="copyToClipboard({$field->id})">{$field->nazev}</span></td>
+                    <td>{$field->val}</td>
+                    <td>
+                        <a n:href=":edit! $field->id" class="ajax btn btn-primary btn-sm">Upravit</a>
+                    </td>
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    {/snippet}
+
+    {snippet modal}
+        {if $presenter->isAjax()}
+                <div class="modal fade modal-ajax">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                {block modalHeader}
+                                    <h3 class="modal-title">
+                                    </h3>
+                                {/block}
+                            </div>
+                            <div class="modal-body">
+                                {control settingsForm}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        {/if}
+    {/snippet}
+
+{/block}
+
+{block scripts}
+    {include parent}
+
+    <script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>
+    <script src="{$basePath}/admin-data/tinymce/js/tinymce/tinymce.js"></script>
+
+
+   <script>
+       $(function () {
+           $.nette.init();
+       });
+   </script>
+
+   <script>
+   	$.nette.ext("modals", {
+   		success: function(payload) {
+               console.log(payload);
+   			if (payload.redirect) {
+   				$(".modal-ajax").modal("hide");
+   			} else if(payload.isModal) {
+   				$('.modal-ajax').modal('show');
+   			}else{
+   			    $(".modal-ajax").modal("hide");
+   			}
+   		}
+   	});
+
+   	$.nette.ext("ajaxRedirect", {
+   		success: function (payload) {
+   			if (payload.redirect) {
+   				$.nette.ajax(payload.redirect);
+   			}
+   		}
+   	});
+   </script>
+
+    <script>
+        function copyToClipboard(element) {
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val(element).select();
+            document.execCommand("copy");
+            $temp.remove();
+        }
+    </script>
+{/block}
+
+
+

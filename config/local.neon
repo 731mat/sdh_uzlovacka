@@ -1,0 +1,8 @@
+parameters:
+	defaultArticleUrl: 'uvod' # URL výhozího článku
+
+
+database:
+	dsn: 'mysql:host=localhost;dbname=c9neplachovice2'
+	user: 'c9neplachovice2'
+	password: 'kLiNyedMHGnniX_sU4XJ'

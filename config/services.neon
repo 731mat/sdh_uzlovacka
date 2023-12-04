@@ -1,0 +1,16 @@
+services:
+	- App\Router\RouterFactory::createRouter
+	- App\Model\UserFacade
+	- App\Forms\FormFactory
+	- App\Forms\SignInFormFactory
+	- App\Forms\SignUpFormFactory
+	- App\Model\SystemVariableManager
+	- App\Components\SystemVariable\SystemVariableFactory
+	- App\Model\Race\RaceListManager
+	- App\Model\Race\RaceCategoryManager
+	- App\Model\Race\RaceUserManager
+	- App\Model\EmailManager\SendEmailManager
+	- App\Model\CompetitorManager
+	- App\Model\MatchesManager
+	theme: AdminModule\Components\Theme\Theme
+

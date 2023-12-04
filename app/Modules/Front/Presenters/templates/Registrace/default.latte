@@ -1,0 +1,129 @@
+{block title}Registrace{/block}
+
+{block content}
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <div n:foreach="$flashes as $flash" class="alert alert-{$flash->type} messageDropDown m-3" >{$flash->message}</div>
+
+        <div class="row g-5">
+            <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+
+
+
+
+                {snippet tabulkaContainer}
+                    <h2>Nová registrace</h2>
+                        {form raceUserForm}
+
+                            <div class="row g-3">
+                                <!-- Simple errors rendering -->
+                                <ul class="errors" n:if="$form->hasErrors()">
+                                    <li n:foreach="$form->errors as $error">{$error}</li>
+                                </ul>
+
+                                {for $i = 0;$i <= $countUsers;$i++}
+
+                                    {foreach array(array('text','first_name','Jméno'),array('text','last_name','Přijmení'),array('number','year','Ročník'),array('number','first_time','Průměrný čas [sekund]')) as $obj}
+                                        <div class="col-sm-3">
+                                            <div class="form-floating">
+                                                <input type="{$obj[0]}" class="form-control bg-light border-0" name="{$obj[1]}[]" placeholder="{$obj[2]}" {if isset($form_data[$obj[1]][$i])}value="{$form_data[$obj[1]][$i]}"{/if}>
+                                                <label for="gname">{$obj[2]}</label>
+                                            </div>
+                                        </div>
+                                    {/foreach}
+                                    <div class="col-sm-3">
+                                        <div class="form-floating">
+                                            <select class="form-control bg-light border-0" name="category_id[]">
+                                                <option n:foreach="$categorys as $key => $val" value="{$key}">{$val}</option>
+                                            </select>
+                                            <label for="gname">Kategorie</label>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                {/for}
+                                <div class="col-12">
+                                        <button class="btn btn-light btn-sm " type="submit" n:name=doplnit>
+                                            <i class="fas fa-plus"></i> přidat závodníka
+                                        </button>
+                                </div>
+
+                                <h5>Zadejte prosím kontaktní údaje, komu přijde souhrnná registrace a ostatní pokyny</h5>
+                                    {foreach array(array('text','sdh','SDH'), array('email','email_sum','Email')) as $obj}
+                                        <div class="col-sm-3">
+                                            <div class="form-floating">
+                                                <input type="{$obj[0]}" class="form-control bg-light border-0" name="{$obj[1]}[]" placeholder="{$obj[2]}" {if isset($form_data[$obj[1]][$i])}value="{$form_data[$obj[1]][$i]}"{/if} required>
+                                                <label for="gname">{$obj[2]}</label>
+                                            </div>
+                                        </div>
+                                    {/foreach}
+
+                                {if isset($hash_old)}
+                                    <input type="hidden" name="hash_old" value="{$hash_old}">
+                                {/if}
+
+
+                                <div class="col-12">
+                                    <button class="btn btn-primary w-100 py-3" type="submit" n:name=send>
+                                        Odeslat
+                                    </button>
+                                </div>
+                            </div>
+
+                        {/form}
+                {/snippet}
+
+
+
+                {if isset($registred)}
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <h2>Vámi registrovaní závodníci:</h2>
+                    <table class="table">
+                        <thead class="thead-warning">
+                        <th>Jméno</th>
+                        <th>SDH</th>
+                        <th>Kategorie</th>
+                        <th>Rok narození</th>
+                        <th>Čas</th>
+                        </thead>
+                        <tbody>
+                        {foreach $registred as $user_tab}
+                            <tr>
+                                <td>{$user_tab->first_name} {$user_tab->last_name}</td>
+                                <td>{$user_tab->sdh}</td>
+                                <td>{array("Mladší","Starší","Dorost")[$user_tab->category-1]}</td>
+                                <td>{$user_tab->year}</td>
+                                <td>{$user_tab->first_time}s</td>
+
+                            </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                {/if}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block scripts}
+{include parent}
+
+    <script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>
+    <script src="{$basePath}/admin-data/tinymce/js/tinymce/tinymce.js"></script>
+
+    <script>
+        $(function () {
+            $.nette.init();
+        });
+    </script>
+{/block}

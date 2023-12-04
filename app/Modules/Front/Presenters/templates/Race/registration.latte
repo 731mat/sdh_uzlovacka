@@ -1,0 +1,93 @@
+{block title}{$race['name']} - registrace{/block}
+
+{block content}
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+
+
+                {snippet tabulkaContainer}
+                    <h2>Registrace
+                        {if $user->isLoggedIn()}
+                        <a n:href=":Admin:RaceUser:default raceid=>$race['id']"  class="btn btn-lg btn-danger">Upravit</a>
+                        {/if}
+                    </h2>
+                        {form raceUserForm}
+                            <input type="hidden" name="id_race" value="{$race['id']}">
+                            <div class="row g-3">
+                                <!-- Simple errors rendering -->
+                                <ul class="errors" n:if="$form->hasErrors()">
+                                    <li n:foreach="$form->errors as $error">{$error}</li>
+                                </ul>
+
+                                {for $i = 0;$i <= $countUsers;$i++}
+
+                                    {foreach array(array('text','first_name','Jméno'),array('text','last_name','Přijmení'),array('date','date_birth','Datum narození'),array('text','team','Tým'),array('email','email','Email'),array('phone','phone','Telefon')) as $obj}
+                                        <div class="col-sm-3">
+                                            <div class="form-floating">
+                                                <input type="{$obj[0]}" class="form-control bg-light border-0" name="{$obj[1]}[]" placeholder="{$obj[2]}" {if isset($form_data[$obj[1]][$i])}value="{$form_data[$obj[1]][$i]}"{/if}>
+                                                <label for="gname">{$obj[2]}</label>
+                                            </div>
+                                        </div>
+                                    {/foreach}
+                                    <div class="col-sm-6">
+                                        <div class="form-floating">
+                                            <select class="form-control bg-light border-0" name="category_id[]">
+                                                <option n:foreach="$categorys as $category" value="{$category['id']}">{$category['name']} - <sup>{$category['description']}</sup></option>
+                                            </select>
+                                            <label for="gname">Kategorie</label>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                {/for}
+
+
+                                {if $countUsers > 0}
+                                <h4>Zadejte prosím kontaktní údaje, komu přijde souhrnná registrace a pokyny k platbě</h4>
+                                    {foreach array(array('email','email_sum','Email')) as $obj}
+                                        <div class="col-sm-3">
+                                            <div class="form-floating">
+                                                <input type="{$obj[0]}" class="form-control bg-light border-0" name="{$obj[1]}[]" placeholder="{$obj[2]}" {if isset($form_data[$obj[1]][$i])}value="{$form_data[$obj[1]][$i]}"{/if}>
+                                                <label for="gname">{$obj[2]}</label>
+                                            </div>
+                                        </div>
+                                    {/foreach}
+
+
+                                {/if}
+
+                                <div class="col-12">
+                                    <button class="btn btn-light btn-sm " type="submit" n:name=doplnit>
+                                        <i class="fas fa-plus"></i> přidat závodníka
+                                    </button>
+                                </div><div class="col-12">
+                                    <button class="btn btn-primary w-100 py-3" type="submit" n:name=send>
+                                        Odeslat
+                                    </button>
+                                </div>
+                            </div>
+
+                        {/form}
+                {/snippet}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block scripts}
+{include parent}
+
+    <script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>
+    <script src="{$basePath}/admin-data/tinymce/js/tinymce/tinymce.js"></script>
+
+    <script>
+        $(function () {
+            $.nette.init();
+        });
+    </script>
+{/block}

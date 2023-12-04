@@ -1,0 +1,70 @@
+{block title}Výsledky{/block}
+{block rightsite}{/block}
+{block tlacitkaZ}
+
+{/block}
+{block tlacitkaP}
+
+{/block}
+
+{block content}
+
+        <table class="table table-bordered">
+            <thead>
+                <th>Pořadí</th>
+                <th>Jméno</th>
+                <th>SDH</th>
+                <th>Kategorie</th>
+                <th>Skóré</th>
+                <th>Kolo</th>
+                <th>Koeficient</th>
+            </thead>
+            <tbody>
+            {foreach $results as $res}
+                <tr>
+                    <td>{$res->vysledne_poradi}</td>
+                    <td>{$res->first_name} {$res->last_name}</td>
+                    <td>{$res->sdh}</td>
+                    <td>{array("Mladší","Starší","Dorost")[$res->category-1]}</td>
+                    <td>{$res->score}</td>
+                    <td>{$res->round}</td>
+                    <td>{$res->koef}</td>
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+
+
+
+{/block}
+
+{block scripts}
+    {include parent}
+
+    <script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>
+    <script src="{$basePath}/admin-data/tinymce/js/tinymce/tinymce.js"></script>
+
+
+   <script>
+       $(function () {
+           $.nette.init();
+       });
+   </script>
+
+   <script n:syntax="double">
+
+   </script>
+
+    <script>
+        function copyToClipboard(element) {
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val(element).select();
+            document.execCommand("copy");
+            $temp.remove();
+        }
+    </script>
+{/block}
+
+
+
